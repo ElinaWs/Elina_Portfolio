@@ -1,23 +1,54 @@
-# Wladyis Portfolio — React + Vite
+# Wladyis Portfolio — React + Vite + GitHub Pages
 
-## Запуск
+## 1. Создай репозиторий
 
-1. Откройте эту папку в VS Code.
-2. Откройте терминал.
-3. Выполните:
+На GitHub создай репозиторий с названием:
 
-```bash
-npm install
-npm run dev
-```
+`wladyis-portfolio`
 
-4. Откройте адрес, который покажет Vite (обычно http://localhost:5173).
+Репозиторий лучше сделать Public.
 
-## Сборка
+## 2. Загрузи содержимое этого проекта
+
+Можно через Git:
 
 ```bash
-npm run build
+git init
+git add .
+git commit -m "Initial portfolio"
+git branch -M main
+git remote add origin https://github.com/ТВОЙ_ЛОГИН/wladyis-portfolio.git
+git push -u origin main
 ```
 
-Проект перенесён из исходной HTML/CSS/JS версии в React. Меню, анимации появления, проекты и остальные блоки теперь управляются React.
-# Elina_Portfolio
+## 3. Включи GitHub Pages
+
+В репозитории открой:
+
+Settings → Pages
+
+В разделе Build and deployment выбери:
+
+Source → GitHub Actions
+
+После `git push` workflow автоматически соберёт React-проект и опубликует его.
+
+## 4. Ссылка
+
+После успешного деплоя сайт будет здесь:
+
+`https://ТВОЙ_ЛОГИН.github.io/wladyis-portfolio/`
+
+Важно: название репозитория должно быть именно `wladyis-portfolio`, потому что `vite.config.js` уже настроен на этот путь.
+
+Если назовёшь репозиторий иначе — измени:
+
+```js
+base: '/wladyis-portfolio/',
+```
+
+на:
+
+```js
+base: '/ИМЯ-ТВОЕГО-РЕПОЗИТОРИЯ/',
+```

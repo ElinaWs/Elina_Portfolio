@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import "./style.css";
 
@@ -53,6 +52,15 @@ const projects = [
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -73,10 +81,72 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
-  // Важно для GitHub Pages:
-  // автоматически добавляет /Elina_Portfolio/
-  // перед assets/profile.jpg
   const profileImage = `${import.meta.env.BASE_URL}assets/profile.jpg`;
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setForm((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
+
+    setErrors((previous) => ({
+      ...previous,
+      [name]: "",
+    }));
+
+    setSubmitted(false);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = "Введите имя";
+    } else if (form.name.trim().length < 2) {
+      newErrors.name = "Имя должно содержать минимум 2 символа";
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = "Введите email";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = "Введите корректный email";
+    }
+
+    if (!form.password) {
+      newErrors.password = "Введите пароль";
+    } else if (form.password.length < 8) {
+      newErrors.password = "Пароль должен содержать минимум 8 символов";
+    }
+
+    return newErrors;
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const newErrors = validateForm();
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    /*
+      ВАЖНО:
+      Данные никуда не отправляются и не сохраняются.
+      Это только визуальная форма.
+    */
+
+    setSubmitted(true);
+
+    // Очищаем пароль из памяти формы после "регистрации".
+    setForm((previous) => ({
+      ...previous,
+      password: "",
+    }));
+  };
 
   return (
     <>
@@ -113,8 +183,8 @@ function App() {
             Проекты
           </a>
 
-          <a href="#contact" onClick={() => setMenuOpen(false)}>
-            Контакты
+          <a href="#register" onClick={() => setMenuOpen(false)}>
+            Регистрация
           </a>
         </nav>
       </header>
@@ -199,8 +269,7 @@ function App() {
 
               <p>
                 Моя большая цель — поступить за границу и продолжить обучение в
-                игровой сфере, а в будущем создать собственную игру, через
-                которую смогу передать свой внутренний мир и свою историю.
+                игровой сфере, а в будущем создать собственную игру.
               </p>
 
               <div className="achievement">
@@ -216,7 +285,6 @@ function App() {
             <div className="about-facts reveal">
               <div className="fact">
                 <span className="fact-icon">⌖</span>
-
                 <div>
                   <small>Местоположение</small>
                   <strong>Бишкек, Кыргызстан</strong>
@@ -225,7 +293,6 @@ function App() {
 
               <div className="fact">
                 <span className="fact-icon">⌘</span>
-
                 <div>
                   <small>Образование</small>
                   <strong>IT & Product Design · 3 курс</strong>
@@ -234,7 +301,6 @@ function App() {
 
               <div className="fact">
                 <span className="fact-icon">♡</span>
-
                 <div>
                   <small>Рисую</small>
                   <strong>С ~7 лет</strong>
@@ -243,7 +309,6 @@ function App() {
 
               <div className="fact">
                 <span className="fact-icon">☆</span>
-
                 <div>
                   <small>Цель</small>
                   <strong>Game Design · обучение за границей</strong>
@@ -455,6 +520,113 @@ function App() {
           </div>
         </section>
 
+        {/* REGISTRATION */}
+        <section id="register" className="section register-section">
+          <div className="section-heading reveal">
+            <span className="section-mark">✦</span>
+            <h2>Регистрация</h2>
+          </div>
+
+          <div className="register-wrapper reveal">
+            <div className="register-info">
+              <span className="register-star">✦</span>
+
+              <h3>Добро пожаловать</h3>
+
+              <p>
+                Создай визуальный профиль, чтобы продолжить знакомство с моим
+                портфолио.
+              </p>
+
+              <div className="register-decoration">
+                <span>art</span>
+                <span>+</span>
+                <span>games</span>
+                <span>+</span>
+                <span>stories</span>
+              </div>
+            </div>
+
+            <form className="register-form" onSubmit={handleSubmit} noValidate>
+              <div className="form-group">
+                <label htmlFor="name">Имя</label>
+
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Введите имя"
+                  autoComplete="name"
+                  maxLength={50}
+                  aria-invalid={Boolean(errors.name)}
+                />
+
+                {errors.name && (
+                  <span className="form-error">{errors.name}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="example@mail.com"
+                  autoComplete="email"
+                  maxLength={100}
+                  aria-invalid={Boolean(errors.email)}
+                />
+
+                {errors.email && (
+                  <span className="form-error">{errors.email}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password">Пароль</label>
+
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder="Минимум 8 символов"
+                  autoComplete="new-password"
+                  maxLength={100}
+                  aria-invalid={Boolean(errors.password)}
+                />
+
+                {errors.password && (
+                  <span className="form-error">{errors.password}</span>
+                )}
+              </div>
+
+              <button className="register-btn" type="submit">
+                Создать аккаунт
+                <span>↗</span>
+              </button>
+
+              {submitted && (
+                <div className="success-message" role="status">
+                  ✓ Форма заполнена успешно!
+                </div>
+              )}
+
+              <p className="form-note">
+                Это демонстрационная форма. Данные никуда не отправляются и не
+                сохраняются.
+              </p>
+            </form>
+          </div>
+        </section>
+
         {/* CONTACT */}
         <section id="contact" className="section contact-section">
           <div className="contact-card reveal">
@@ -468,11 +640,7 @@ function App() {
             </p>
 
             <div className="contact-links">
-              <a
-                href="https://t.me/"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href="https://t.me/" target="_blank" rel="noreferrer">
                 Telegram ↗
               </a>
 
@@ -497,4 +665,3 @@ function App() {
 }
 
 export default App;
-

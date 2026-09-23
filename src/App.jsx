@@ -81,6 +81,8 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
+  // Для GitHub Pages:
+  // /Elina_Portfolio/assets/profile.jpg
   const profileImage = `${import.meta.env.BASE_URL}assets/profile.jpg`;
 
   const handleChange = (event) => {
@@ -105,19 +107,21 @@ function App() {
     if (!form.name.trim()) {
       newErrors.name = "Введите имя";
     } else if (form.name.trim().length < 2) {
-      newErrors.name = "Имя должно содержать минимум 2 символа";
+      newErrors.name = "Минимум 2 символа";
     }
 
     if (!form.email.trim()) {
       newErrors.email = "Введите email";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    } else if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
+    ) {
       newErrors.email = "Введите корректный email";
     }
 
     if (!form.password) {
       newErrors.password = "Введите пароль";
     } else if (form.password.length < 8) {
-      newErrors.password = "Пароль должен содержать минимум 8 символов";
+      newErrors.password = "Минимум 8 символов";
     }
 
     return newErrors;
@@ -133,15 +137,11 @@ function App() {
       return;
     }
 
-    /*
-      ВАЖНО:
-      Данные никуда не отправляются и не сохраняются.
-      Это только визуальная форма.
-    */
-
+    // Демонстрационная форма.
+    // Никакие данные никуда не отправляются.
     setSubmitted(true);
 
-    // Очищаем пароль из памяти формы после "регистрации".
+    // Пароль сразу удаляем из состояния.
     setForm((previous) => ({
       ...previous,
       password: "",
@@ -190,6 +190,7 @@ function App() {
       </header>
 
       <main id="top">
+
         {/* HERO */}
         <section className="hero section">
           <div className="hero-copy reveal">
@@ -258,7 +259,8 @@ function App() {
             <div className="about-main reveal">
               <p>
                 Я из <strong>Бишкека, Кыргызстан.</strong> Сейчас учусь на 3
-                курсе по специальности <strong>IT & Product Design</strong>.
+                курсе по специальности{" "}
+                <strong>IT & Product Design</strong>.
               </p>
 
               <p>
@@ -268,8 +270,9 @@ function App() {
               </p>
 
               <p>
-                Моя большая цель — поступить за границу и продолжить обучение в
-                игровой сфере, а в будущем создать собственную игру.
+                Моя большая цель — поступить за границу и продолжить обучение
+                в игровой сфере, а в будущем создать собственную игру, через
+                которую смогу передать свой внутренний мир и свою историю.
               </p>
 
               <div className="achievement">
@@ -462,7 +465,9 @@ function App() {
                 </div>
 
                 <div className="project-content">
-                  <div className="project-meta">{project.number}</div>
+                  <div className="project-meta">
+                    {project.number}
+                  </div>
 
                   <h3>{project.title}</h3>
 
@@ -534,8 +539,8 @@ function App() {
               <h3>Добро пожаловать</h3>
 
               <p>
-                Создай визуальный профиль, чтобы продолжить знакомство с моим
-                портфолио.
+                Создай визуальный профиль, чтобы продолжить знакомство
+                с моим портфолио.
               </p>
 
               <div className="register-decoration">
@@ -547,7 +552,11 @@ function App() {
               </div>
             </div>
 
-            <form className="register-form" onSubmit={handleSubmit} noValidate>
+            <form
+              className="register-form"
+              onSubmit={handleSubmit}
+              noValidate
+            >
               <div className="form-group">
                 <label htmlFor="name">Имя</label>
 
@@ -564,7 +573,9 @@ function App() {
                 />
 
                 {errors.name && (
-                  <span className="form-error">{errors.name}</span>
+                  <span className="form-error">
+                    {errors.name}
+                  </span>
                 )}
               </div>
 
@@ -584,7 +595,9 @@ function App() {
                 />
 
                 {errors.email && (
-                  <span className="form-error">{errors.email}</span>
+                  <span className="form-error">
+                    {errors.email}
+                  </span>
                 )}
               </div>
 
@@ -604,7 +617,9 @@ function App() {
                 />
 
                 {errors.password && (
-                  <span className="form-error">{errors.password}</span>
+                  <span className="form-error">
+                    {errors.password}
+                  </span>
                 )}
               </div>
 
@@ -620,8 +635,8 @@ function App() {
               )}
 
               <p className="form-note">
-                Это демонстрационная форма. Данные никуда не отправляются и не
-                сохраняются.
+                Это демонстрационная форма. Данные никуда не
+                отправляются и не сохраняются.
               </p>
             </form>
           </div>
@@ -632,11 +647,13 @@ function App() {
           <div className="contact-card reveal">
             <span className="section-mark">✦</span>
 
-            <h2>Давай создадим что-нибудь классное.</h2>
+            <h2>
+              Давай создадим что-нибудь классное.
+            </h2>
 
             <p>
-              Если тебе интересны игры, визуал и создание миров — буду рада
-              познакомиться.
+              Если тебе интересны игры, визуал и создание миров —
+              буду рада познакомиться.
             </p>
 
             <div className="contact-links">
@@ -665,3 +682,4 @@ function App() {
 }
 
 export default App;
+
